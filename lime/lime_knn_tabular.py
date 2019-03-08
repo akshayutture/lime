@@ -3,7 +3,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn import preprocessing
 import subprocess
 
-def explainInstanceUsingKNN(originalClassifier,instancePoint,num_samples,num_neighbours,feature_names,class_names,dataPointInterpretation,scalar):
+def explainInstanceUsingKNN(originalClassifier=None,instancePoint=None,num_samples=1000,num_neighbours=5,feature_names=None,class_names=None,dataPointInterpretation="Data Points",scalar=None):
 	#Get the label for the instance point as given by the classifier
 	instancePointIn2darray = np.reshape(instancePoint,(1,-1))
 	instancePointLabel = (originalClassifier.predict(instancePointIn2darray))[0]
@@ -32,7 +32,7 @@ def explainInstanceUsingKNN(originalClassifier,instancePoint,num_samples,num_nei
 	
 
 	#TERMINAL OUTPUT
-	#Print instance point.
+	#Print instance point. - uncomment to print output to terminal instead
 	'''
 	print(dataPointInterpretation + " to Explain is")
 	for featureIndex in range(len(unScaledInstancePointIn2darray[0])):
@@ -56,8 +56,8 @@ def explainInstanceUsingKNN(originalClassifier,instancePoint,num_samples,num_nei
 		htmlContentString += "<b>" + feature_names[featureIndex] + "</b> : " + str(round(unScaledInstancePointIn2darray[0][featureIndex],2)) + "<br>"
 	htmlContentString += "</div>"
 
-	#Show all the similar points with the same label with a collapsible UI
-	htmlContentString += "<h1> Reason for classification as " + class_names[instancePointLabel] + " is that it is similar to these other " + dataPointInterpretation + ":</h1>"
+	#show all the similar points with the same label with a collapsible UI
+	htmlContentString += "<h1> Reason for classification as " + class_names[instancePointLabel] + " is that it is similar to these other " + class_names[instancePointLabel] + "s:</h1>"
 
 	for i in range(len(unscaledSimilarPointsForExplanation)):
 		htmlContentString += '<button class="collapsible">' + dataPointInterpretation + " " + str(i) + "</button>"
@@ -69,7 +69,7 @@ def explainInstanceUsingKNN(originalClassifier,instancePoint,num_samples,num_nei
 	return HTMLboilerplateCodeHead() + htmlContentString + HTMLboilerplateCodeTail()
 
 
-
+#Computes 'num_samples' many datapoints within the vicinity of the instancepoint with given standard deviation
 def getDataPointsInVicinity(instancePoint,num_samples,stdDev):
 	numberOfFeatures = instancePoint.shape[0]
 	perturbations = np.random.normal(0,stdDev,num_samples*numberOfFeatures)
@@ -87,13 +87,13 @@ def HTMLboilerplateCodeHead():
 	return """<!DOCTYPE html>
 	<html>
 	<head>
-	<link rel="stylesheet" type="text/css" href="test.css">
+	<link rel="stylesheet" type="text/css" href="knn_visualize.css">
 	</head>
 	<body>
 	"""
 
 def HTMLboilerplateCodeTail():
-	return '<script src="test.js"></script></body></html>'
+	return '<script src="knn_visualize.js"></script></body></html>'
 
 def openHTMLStringInBrowser(explanation):
 	with open("test.html", "w") as f:
