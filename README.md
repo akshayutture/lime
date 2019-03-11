@@ -1,11 +1,11 @@
 # LIME-KNN
 
-This project is a fork of the original LIME [repository] (https://github.com/marcotcr/lime), which is based on the following [paper] (https://arxiv.org/abs/1602.04938).
+This project is a fork of the original LIME [repository](https://github.com/marcotcr/lime), which is based on the following [paper](https://arxiv.org/abs/1602.04938).
 As of now, the LIME-KNN explanations work on Tabular data and Image data.
 
 ## Installation Requirements
 
-The Installation requirements are almost identical to the original LIME [repository] (https://github.com/marcotcr/lime).
+The Installation requirements are almost identical to the original LIME[repository](https://github.com/marcotcr/lime).
 Run "python setup.py install" to install any missing requirements.
 
 ## KNN explanation for Tabular Data
